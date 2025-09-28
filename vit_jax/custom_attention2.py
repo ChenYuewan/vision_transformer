@@ -20,8 +20,10 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
     precision=None,
     module=None,                   # 允许透传，便于 sow 中间量
     force_fp32_for_softmax: bool = False,  # 忽略（我们不用 softmax）
-    einsum_dot_general=jax.lax.dot_general  # 也透传
+    einsum_dot_general=jax.lax.dot_general,  # 也透传
+    **kwargs
 ):
+    print(">>> GELU2 Attention is running <<<")
     query, key, value = promote_dtype(query, key, value, dtype=dtype)
     dtype = query.dtype
 
