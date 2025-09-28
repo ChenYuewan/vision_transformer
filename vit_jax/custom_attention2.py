@@ -60,7 +60,7 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
 
     # （可选）把注意力权重 sow 出去，保持与 flax 行为一致
     if module is not None:
-        module.sow('intermediates', 'attention_weights', weights)
+        module.sow('intermediates', 'attention_weights_gelu2', weights)
 
     # 3) 加权 V
     if (not deterministic) and (dropout_rate > 0.0):
