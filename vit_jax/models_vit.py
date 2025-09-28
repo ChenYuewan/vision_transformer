@@ -19,6 +19,8 @@ import jax.numpy as jnp
 
 from vit_jax import models_resnet
 
+from custom_attention2 import gelu2_attention
+
 
 Array = Any
 PRNGKey = Any
@@ -142,7 +144,8 @@ class Encoder1DBlock(nn.Module):
         broadcast_dropout=False,
         deterministic=deterministic,
         dropout_rate=self.attention_dropout_rate,
-        num_heads=self.num_heads)(
+        num_heads=self.num_heads,
+        attention_fn=gelu2_attention)(
             x, x)
     x = nn.Dropout(rate=self.dropout_rate)(x, deterministic=deterministic)
     x = x + inputs
