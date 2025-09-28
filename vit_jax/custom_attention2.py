@@ -87,3 +87,11 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
         gelu2_attention._printed = True
 
     return out.astype(dtype)
+
+    def gelu2(x):
+        """简单的 gelu^2 激活函数示例"""
+        return jax.nn.gelu(x) ** 2
+
+    def gelu2_softmax(logits, axis=-1):
+        """先用 gelu^2，再做 softmax"""
+        return jax.nn.softmax(gelu2(logits), axis=axis)
