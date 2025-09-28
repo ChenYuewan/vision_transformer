@@ -79,4 +79,9 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
 
     out = jnp.einsum('...hqk,...khd->...qhd', weights.astype(dtype), value,
                      precision=precision, _dot_general=einsum_dot_general)
+
+    if jax.process_index() == 0 and not getattr(gelu2_attention, "_printed", False):
+        print(">>> GELU2 Attention is running <<<")
+        gelu2_attention._printed = True
+
     return out.astype(dtype)
