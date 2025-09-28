@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
-import flax.linen as nn
 from typing import Optional
+from flax.linen.module import Module
 
 from flax.linen.dtypes import promote_dtype
 
@@ -18,7 +18,7 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
     deterministic: bool = False,
     dtype=jnp.float32,
     precision=None,
-    module=None,                   # 允许透传，便于 sow 中间量
+    module: Optional[Module] = None,                   # 允许透传，便于 sow 中间量
     force_fp32_for_softmax: bool = False,  # 忽略（我们不用 softmax）
     einsum_dot_general=jax.lax.dot_general,  # 也透传
     **kwargs
