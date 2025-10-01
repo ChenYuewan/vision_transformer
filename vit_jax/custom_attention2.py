@@ -46,6 +46,7 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
         _dot_general=einsum_dot_general,
     )
     logits = jnp.where(logits > 0, logits, 0.0)
+    print("Max of logits:", jnp.max(logits))
 
     if bias is not None:
         logits = logits + bias
@@ -93,4 +94,7 @@ def gelu2(x):
 
 def gelu2_softmax(logits, axis=-1):
     """先用 gelu^2，再做 softmax"""
-    return jax.nn.softmax(gelu2(logits), axis=axis)
+    unnormalized = jax.nn.gelu(logits) ** 2
+    denom = jnp.sum(unnormalized, axis=-1, keepdims=True)
+    result = jnp.where(denom > 0, unnormalized / (denom + 1e-9), jnp.zeros_like(unnormalized))
+    return result
