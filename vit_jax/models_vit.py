@@ -175,7 +175,7 @@ class Encoder(nn.Module):
   mlp_dim: int
   num_heads: int
   dropout_rate: float = 0.1
-  attention_dropout_rattnate: float = 0.1
+  attention_dropout_rate: float = 0.1
   add_position_embedding: bool = True
 
   @nn.compact
