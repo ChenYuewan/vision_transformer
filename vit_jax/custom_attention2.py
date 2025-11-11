@@ -46,7 +46,8 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
         _dot_general=einsum_dot_general,
     )
     logits = jnp.where(logits > 0, logits, 0.0)
-    print("Max of logits:", jnp.max(logits))
+    #print("Max of logits:", jnp.max(logits))
+    jax.debug.print("Max of logits: {}", jnp.max(logits))
 
     if bias is not None:
         logits = logits + bias

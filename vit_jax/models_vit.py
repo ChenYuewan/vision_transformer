@@ -20,6 +20,7 @@ import jax.numpy as jnp
 from vit_jax import models_resnet
 
 from vit_jax import custom_attention2 as ca2
+from vit_jax import custom_attention3 as ca3
 
 
 Array = Any
@@ -145,7 +146,7 @@ class Encoder1DBlock(nn.Module):
         deterministic=deterministic,
         dropout_rate=self.attention_dropout_rate,
         num_heads=self.num_heads,
-        attention_fn=ca2.gelu2_attention)(
+        attention_fn=ca3.gelu2_LUT_attention)(
             x, x)
     x = nn.Dropout(rate=self.dropout_rate)(x, deterministic=deterministic)
     x = x + inputs
@@ -174,7 +175,7 @@ class Encoder(nn.Module):
   mlp_dim: int
   num_heads: int
   dropout_rate: float = 0.1
-  attention_dropout_rate: float = 0.1
+  attention_dropout_rattnate: float = 0.1
   add_position_embedding: bool = True
 
   @nn.compact

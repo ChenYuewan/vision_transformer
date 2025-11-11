@@ -28,7 +28,7 @@ def gelu2_LUT(x):
         0, n_lut - 1)
     return gelu2_vals_q[idx].astype(jnp.float32) / scale
 
-def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
+def gelu2_LUT_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
     query: jnp.ndarray,            # [..., q, heads, d]
     key: jnp.ndarray,              # [..., k, heads, d]
     value: jnp.ndarray,            # [..., k, heads, dv]
@@ -105,9 +105,9 @@ def gelu2_attention(  # 签名尽量与 flax 的 dot_product_attention 对齐
     out = jnp.einsum('...hqk,...khd->...qhd', weights.astype(dtype), value,
                      precision=precision, _dot_general=einsum_dot_general)
 
-    if jax.process_index() == 0 and not getattr(gelu2_attention, "_printed", False):
-        print(">>> GELU2 Attention is running <<<")
-        gelu2_attention._printed = True
+    if jax.process_index() == 0 and not getattr(gelu2_LUT_attention, "_printed", False):
+        print(">>> LUT-based GELU2 Attention is running <<<")
+        gelu2_LUT_attention._printed = True
 
     return out.astype(dtype)
 
